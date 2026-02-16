@@ -3,4 +3,22 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "daily" # Set to daily for testing so it checks immediately
+      interval: "daily"
+    
+    # This is so users get the latest code immediately.
+    versioning-strategy: increase
+
+    groups:
+      # Bundles ALL updates (Patch, Minor, Major) into one single PR
+      # This prevents multiple PRs from conflicting with each other.
+      everything:
+        patterns:
+          - "*"
+
+    # Explicitly allow all types of updates (including Major/Breaking)
+    allow:
+      - dependency-type: "all"
+
+    labels:
+      - "dependencies"
+      - "auto-merge"
