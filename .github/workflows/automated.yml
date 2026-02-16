@@ -11,6 +11,7 @@ permissions:
   pull-requests: write
 
 jobs:
+  # JOB 1: Test the updates and Merge if safe
   test-and-auto-merge:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
@@ -45,12 +46,12 @@ jobs:
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+          # FIX: The error explicitly asked for GH_TOKEN, not GITHUB_TOKEN
+          GH_TOKEN: ${{ secrets.GH_PAT }}
 
   # JOB 2: Bump version and Publish to NPM
   publish-and-release:
-    # FIX: Added double quotes " " around the entire condition.
-    # This prevents the colon in 'chore: bump' from breaking the YAML parser.
+    # Runs only on push to main, ignoring the commit we just made to bump the version
     if: "${{ github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: bump version') }}"
     runs-on: ubuntu-latest
     steps:
