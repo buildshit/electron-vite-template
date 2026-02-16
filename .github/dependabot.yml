@@ -3,10 +3,8 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
-    # This ignores major version updates (e.g. Vite 5 -> 6) to prevent breaking changes
-    # Remove this block if you want it to try major updates too
-    ignore:
-      - dependency-name: "*"
-        update-types: ["version-update:semver-major"]
+      interval: "daily" # Check once a week
+      time: "04:00"      # Optional: Runs at 4am
+      timezone: "America/New_York"
+    # removed the 'ignore' block so you get ALL updates
     open-pull-requests-limit: 10
