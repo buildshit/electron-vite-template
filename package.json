@@ -1,6 +1,6 @@
 {
   "name": "electron-vite-template",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Reusable Electron + Vite starter template",
   "main": "scripts/create.cjs",
   "bin": {
@@ -27,7 +27,11 @@
     "dist": "bun run build && electron-builder",
     "create": "node ./scripts/create.cjs"
   },
-  "keywords": ["electron", "vite", "template"],
+  "keywords": [
+    "electron",
+    "vite",
+    "template"
+  ],
   "author": "",
   "license": "MIT",
   "devDependencies": {
