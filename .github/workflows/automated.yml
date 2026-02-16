@@ -46,8 +46,9 @@ jobs:
 
   # JOB 2: Bump version and Publish to NPM
   publish-and-release:
-    # Runs only on push to main, ignoring the commit we just made to bump the version
-    if: ${{ github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: bump version') }}
+    # FIX: Added double quotes " " around the entire condition.
+    # This prevents the colon in 'chore: bump' from breaking the YAML parser.
+    if: "${{ github.event_name == 'push' && !contains(github.event.head_commit.message, 'chore: bump version') }}"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
