@@ -11,37 +11,40 @@ permissions:
   pull-requests: write
 
 jobs:
-  # JOB 1: Test the updates and Merge if safe
   test-and-auto-merge:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      
+      # 1. Explicitly set Node version (Vite 7 needs Node 18/20+)
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
       - uses: oven-sh/setup-bun@v2
       
       - name: Test generation
-        run: node scripts/create.cjs test-output
+        run: |
+          rm -rf test-output
+          node scripts/create.cjs test-output
         
       - name: Test install and build
         run: |
           cd test-output
           bun install
-          # SAFETY CHECK:
-          # This compiles the template with the new dependencies.
-          # If a Major update breaks the code, this step fails, 
-          # and the auto-merge will NOT happen.
+          # Check if the build script exists and run it
           bun run build
         env:
-          # Electron/Canvas binaries sometimes fail in CI without this
           CANVAS_SKIP_BINARY_DOWNLOAD: 'true'
+          # This helps Electron builds in headless environments
+          CI: true 
 
       - name: Enable auto-merge for Dependabot
         if: ${{ github.actor == 'dependabot[bot]' }}
         run: gh pr merge --auto --merge "$PR_URL"
         env:
           PR_URL: ${{ github.event.pull_request.html_url }}
-          # CRITICAL: Using GH_PAT triggers the "push" event after merge.
-          # If you used GITHUB_TOKEN here, the publish job below would never start.
           GITHUB_TOKEN: ${{ secrets.GH_PAT }}
 
   # JOB 2: Bump version and Publish to NPM
