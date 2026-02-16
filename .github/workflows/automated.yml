@@ -24,7 +24,6 @@ jobs:
       - name: Test install
         run: |
           cd test-output
-          # We use --frozen-lockfile to ensure it uses your exact bun.lock
           bun install --frozen-lockfile
 
       - name: Enable auto-merge for Dependabot
