@@ -1,5 +1,16 @@
 # Changelog
 
+## 2026-02-15 (template package + scaffolder)
+
+### Changed
+- Converted the template into a publish-ready npm package with executable `bin` commands.
+- Added `scripts/create.cjs` so new projects can be scaffolded with `npx electron-vite-template <project-name>` or `bunx electron-vite-template <project-name>`.
+- Added `template.gitignore` and package `files` configuration so generated projects get a clean `.gitignore` and only required template assets are published.
+- Updated `README.md` with package-based usage and npm publish steps.
+
+### Verified
+- Scaffold script includes Electron/Vite source files, writes a project-specific `package.json`, and creates starter `README.md` and `.gitignore`.
+
 ## 2026-02-15
 
 ### Changed
